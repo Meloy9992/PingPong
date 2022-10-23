@@ -15,10 +15,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
     int bit1Y = 120;
     int bit2Y = 120;
+    int bit3Y = 120;
+    int bit4Y = 120;
 
     int locateX = 4; // Скорость мяча
     int locateY = -4; // Скорость мяча
-
 
     Timer timer;
 
@@ -53,6 +54,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         graphics.setColor(Color.white);
         graphics.fillRect(572, bit2Y, 10, 100);
 
+        // Препятствие
+        graphics.setColor(Color.white);
+        graphics.fillRect(200, bit3Y, 10, 100);
+
+        // Препятствие 2
+        graphics.setColor(Color.white);
+        graphics.fillRect(380, bit4Y, 10, 100);
+
         //Счетчик очков
         Font font = new Font("Arial", Font.BOLD, 25);
         graphics.setFont(font);
@@ -79,7 +88,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         ballCollision();
-        updateBit2();
+        updateBit();
         updateBall();
         repaint();
     }
@@ -117,7 +126,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         // Запуск по нажатию на ENTER
     }
 
-    public void updateBit2(){
+    public void updateBit(){
         if (ballY - 50 <= bit2Y && ballX >= 500 && locateX > 0){ // 500 - ограничение реагирвания ракетки 2
             bit2Y -= 5;
             // Скорость ракетки 2
@@ -133,12 +142,54 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             // Скорость ракетки 2
         }
 
-        if (new Rectangle(ballX, ballY, 14, 14).intersects(new Rectangle(572, bit2Y, 10, 100))){
-            locateX =-Math.abs(locateX + 1); // Увеличение скорости мяча при касании ракеткой 2
+        if (ballY - 20 <= bit3Y){
+            bit3Y -= 2;
+            // Скорость ракетки 3
         }
 
-        if (new Rectangle(ballX, ballY, 14, 14).intersects(new Rectangle(0, bit1Y, 10, 100))){
-            locateX =-(locateX - 1); // Увеличение скорости мяча при касании ракеткой 1
+        if (ballY - 20 >= bit3Y){
+            bit3Y += 2;
+            // Скорость ракетки 3
+        }
+
+        if (bit3Y >= 260){
+            bit3Y = 260;
+        }
+        if (bit3Y <= 0){
+            bit3Y = 0;
+        }
+
+        if (ballY - 20 <= bit4Y){
+            bit4Y -= 2;
+            // Скорость ракетки 4
+        }
+
+        if (ballY - 20 >= bit4Y){
+            bit4Y += 2;
+            // Скорость ракетки 4
+        }
+
+        if (bit4Y >= 260){
+            bit4Y = 260;
+        }
+        if (bit4Y <= 0){
+            bit4Y = 0;
+        }
+
+        if (new Rectangle(ballX, ballY, 15, 15).intersects(new Rectangle(380, bit4Y, 10, 100))){
+            locateX =- locateX + 2; // Увеличение скорости мяча при касании ракеткой 4
+        }
+
+        if (new Rectangle(ballX, ballY, 15, 15).intersects(new Rectangle(200, bit3Y, 10, 100))){
+            locateX =-  locateX + 2; // Увеличение скорости мяча при касании ракеткой 3
+        }
+
+        if (new Rectangle(ballX, ballY, 15, 15).intersects(new Rectangle(572, bit2Y, 10, 100))){
+            locateX =- Math.abs(locateX + 1); // Увеличение скорости мяча при касании ракеткой 2
+        }
+
+        if (new Rectangle(ballX, ballY, 15, 15).intersects(new Rectangle(0, bit1Y, 10, 100))){
+            locateX =- locateX - 1; // Увеличение скорости мяча при касании ракеткой 1
         }
 
         score();
@@ -155,6 +206,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
             bit1Y = 120; // Установка первоначального положения ракетки 1
             bit2Y = 120; // Установка первоначального положения ракетки 2
+            bit3Y = 120; // Установка первоначального положения ракетки 3
+            bit4Y = 120; // Установка первоначального положения ракетки 4
         }
         if (ballX > 620){
             player1Score++;
@@ -166,6 +219,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
             bit1Y = 120;
             bit2Y = 120;
+            bit3Y = 120;
+            bit4Y = 120;
 
         }
     }
